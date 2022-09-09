@@ -1,4 +1,5 @@
 ﻿using SharpChess.Entities.Match;
+using SharpChess.Entities.Pieces;
 using SharpChess.Entities.Primitives;
 using SharpChess.Exceptions;
 
@@ -19,7 +20,8 @@ public class ChessBoard
     {
         Player1 = player1;
         Player2 = player2;
-        OnBoardPieces = new Piece[NumberOfRows, NumberOfColumns];
+        OnBoardPieces = new Piece?[NumberOfRows, NumberOfColumns];
+        DeployPieces();
     }
 
     public Piece? PieceAt(Position position)
@@ -32,15 +34,10 @@ public class ChessBoard
         return PositionIsValid(position) && PieceAt(position) != null;
     }
     
-    public static bool PositionIsValid(Position position)
+    public static bool PositionIsValid(Position destination)
     {
-        if (position is null)
-        {
-            return false;
-        }
-
-        bool xPositionIsNotValid = position.X < 0 || position.X > NumberOfRows;
-        bool yPositionIsNotValid = position.Y < 0 || position.Y > NumberOfColumns;
+        bool xPositionIsNotValid = destination.X < 0 || destination.X > NumberOfRows;
+        bool yPositionIsNotValid = destination.Y < 0 || destination.Y > NumberOfColumns;
         if (xPositionIsNotValid || yPositionIsNotValid)
         {
             return false;
@@ -76,8 +73,52 @@ public class ChessBoard
         return piece;
     }
 
+    private void DeployPieces()
+    {
+        const int Player1SidePawnRow = 1;
+        const int Player2SidePawnRow = 6;
+        const char PawnModel = 'P';
+
+        for (int i = 0; i < NumberOfColumns; i++)
+        {
+            Position player1PawnInitialPosition = new Position(i, Player1SidePawnRow);
+            Position player2PawnInitialPosition = new Position(i, Player2SidePawnRow);
+
+            OnBoardPieces[i, Player1SidePawnRow] = new Pawn(Player1.Color, player1PawnInitialPosition, PawnModel);
+            OnBoardPieces[i, Player2SidePawnRow] = new Pawn(Player2.Color, player2PawnInitialPosition, PawnModel);
+        }
+    }
+
     public bool CheckWinner() 
     {
-        return true;
+        bool player1Won = Player1.GottenPieces.Any((piece) => piece.Color == Player2.Color && piece.PieceModel == 'Q');
+        bool player2Won = Player2.GottenPieces.Any((piece) => piece.Color == Player1.Color && piece.PieceModel == 'Q');
+        if (player1Won || player2Won)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public override string ToString()
+    {
+        string board = "";
+
+        for (int i = NumberOfRows; i < 0; i--)
+        {
+            board.Concat($"{i + 1} |");
+
+            for (int j = 0; i > NumberOfColumns; i++)
+            {
+                board.Concat($" {OnBoardPieces[i,j].PieceModel} |");
+            }
+
+            board.Concat("\n");
+        }
+
+        board.Concat("  | 1 | 2 | 3 | 4 | 6 | 7 | 8 |");
+
+        return board;
     }
 }

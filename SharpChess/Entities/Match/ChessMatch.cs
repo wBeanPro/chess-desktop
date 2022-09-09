@@ -11,27 +11,55 @@ public sealed class ChessMatch
     public Player Player2 { get; private init; }
     public Player? MatchWinner { get; private set; } = null;
 
-    public ChessMatch(Player player1, Player player2, ChessBoard board)
+    public ChessMatch(Player player1, Player player2)
     {
         Player1 = player1;
         Player2 = player2;
-        Board = board;
+        Board = new ChessBoard(Player1, Player2);
         CurrentGameState = GameState.NotStarted;
     }
 
     public void GameLoop()
     {
-        CurrentGameState = GameState.Running;
+        SetNewGameState(GameState.Running);
+
+        int currentPlayer = 1;
 
         do
         {
+            Console.WriteLine("Board:");
+            Console.WriteLine(Board.ToString());
+
+            Console.WriteLine($"Player {currentPlayer}, choose the piece location to move:");
+            Console.Write("X: ");
+            int xValue = int.Parse(Console.ReadLine());
+            Console.Write("Y: ");
+            int yValue = int.Parse(Console.ReadLine());
+
+            Console.WriteLine($"Player {currentPlayer}, choose the destination:");
+            Console.Write("X: ");
+            int xDestination = int.Parse(Console.ReadLine());
+            Console.Write("Y: ");
+            int yDestinatioon = int.Parse(Console.ReadLine());
+
+            Position piecePosition = new Position(xValue, yValue);
+            Position destination = new Position(xDestination, yDestinatioon);
+
+            Board.PutPieceAt(Board.PieceAt(piecePosition), destination);
+
+            Console.WriteLine("Board:");
+            Console.WriteLine(Board.ToString());
+
+
             bool hasWinner = Board.CheckWinner();
 
             if (hasWinner)
             {
                 MatchWinner = Board.Winner;
-                CurrentGameState = GameState.Ended;
+                SetNewGameState(GameState.Ended);
             }
+
+            currentPlayer = currentPlayer == 1 ? 2 : 1;
 
             continue;
         } while (CurrentGameState == GameState.Running);
@@ -39,12 +67,12 @@ public sealed class ChessMatch
         DisplayWinnerMessage(MatchWinner);
     }
 
-    public void DisplayWinnerMessage(Player winner)
+    private static void DisplayWinnerMessage(Player winner)
     {
         Console.WriteLine($"Congratulations {winner.Name}! You have won the SharpChess match!");
     }
 
-    public void SetNewGameState(GameState newState)
+    private void SetNewGameState(GameState newState)
     {
         CurrentGameState = newState;
     }

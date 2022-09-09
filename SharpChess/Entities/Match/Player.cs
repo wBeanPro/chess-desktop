@@ -9,7 +9,7 @@ public sealed class Player
     public string Name { get; private init; }
     public List<Piece> GottenPieces { get; private init; } = new List<Piece>();
 
-    public Player(PieceColor color, string name)
+    public Player(string name, PieceColor color)
     {
         Color = color;
         Name = name;
