@@ -56,6 +56,7 @@ public sealed class ChessMatch
             if (hasWinner)
             {
                 MatchWinner = Board.Winner;
+                DisplayWinnerMessage(MatchWinner);
                 SetNewGameState(GameState.Ended);
             }
 
@@ -64,7 +65,7 @@ public sealed class ChessMatch
             continue;
         } while (CurrentGameState == GameState.Running);
 
-        DisplayWinnerMessage(MatchWinner);
+        
     }
 
     private static void DisplayWinnerMessage(Player winner)
