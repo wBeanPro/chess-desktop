@@ -21,8 +21,6 @@ public sealed class ChessMatch
 
     public void GameLoop()
     {
-
-
         CurrentGameState = GameState.Running;
 
         do
