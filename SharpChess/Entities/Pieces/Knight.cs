@@ -2,6 +2,6 @@
 
 namespace SharpChess.Entities.Pieces;
 
-public class Knight : Piece
+public sealed class Knight : Piece
 {
 }

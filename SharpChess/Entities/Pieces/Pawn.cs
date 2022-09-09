@@ -1,5 +1,7 @@
-﻿namespace SharpChess.Entities.Pieces;
+﻿using SharpChess.Entities.Primitives;
 
-public class Pawn
+namespace SharpChess.Entities.Pieces;
+
+public sealed class Pawn : Piece
 {
 }
