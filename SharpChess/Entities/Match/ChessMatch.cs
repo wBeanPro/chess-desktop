@@ -45,7 +45,15 @@ public sealed class ChessMatch
             Position piecePosition = new Position(xValue, yValue);
             Position destination = new Position(xDestination, yDestinatioon);
 
-            Board.PutPieceAt(Board.PieceAt(piecePosition), destination);
+            try
+            {
+                Board.PutPieceAt(Board.PieceAt(piecePosition), destination);
+            } 
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+                continue;
+            }
 
             Console.WriteLine("Board:");
             Console.WriteLine(Board.ToString());
@@ -63,9 +71,7 @@ public sealed class ChessMatch
             currentPlayer = currentPlayer == 1 ? 2 : 1;
 
             continue;
-        } while (CurrentGameState == GameState.Running);
-
-        
+        } while (CurrentGameState == GameState.Running); 
     }
 
     private static void DisplayWinnerMessage(Player winner)
