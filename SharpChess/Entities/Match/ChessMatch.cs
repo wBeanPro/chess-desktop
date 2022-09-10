@@ -34,16 +34,16 @@ public sealed class ChessMatch
             Console.WriteLine(Board.ToString());
 
             Console.WriteLine($"Player {currentPlayer}, choose the piece location to move:");
-            Console.Write("X: ");
-            int xValue = int.Parse(Console.ReadLine());
-            Console.Write("Y: ");
+            Console.Write("Y (Row): ");
             int yValue = int.Parse(Console.ReadLine());
+            Console.Write("X (Column): ");
+            int xValue = int.Parse(Console.ReadLine());
 
-            Position piecePosition = new Position(xValue, yValue);
+            Position movingPiecePosition = new Position(yValue, xValue);
 
             try
             {
-                bool pieceIsNotFromTurnPlayer = !(Board.PieceAt(piecePosition).Color == turnPlayer.Color);
+                bool pieceIsNotFromTurnPlayer = !(Board.PieceAt(movingPiecePosition).Color == turnPlayer.Color);
 
                 if (pieceIsNotFromTurnPlayer)
                 {
@@ -59,16 +59,16 @@ public sealed class ChessMatch
 
             
             Console.WriteLine($"Player {currentPlayer}, choose the destination:");
-            Console.Write("X: ");
+            Console.Write("Y (Row): ");
+            int yDestination = int.Parse(Console.ReadLine());
+            Console.Write("X (Column): ");
             int xDestination = int.Parse(Console.ReadLine());
-            Console.Write("Y: ");
-            int yDestinatioon = int.Parse(Console.ReadLine());
 
-            Position destination = new Position(xDestination, yDestinatioon);
+            Position destination = new Position(yDestination, xDestination);
 
             try
             {
-                Board.PutPieceAt(Board.PieceAt(piecePosition), destination);
+                Board.PutPieceAt(Board.PieceAt(movingPiecePosition), destination);
             } 
             catch (Exception exception)
             {

@@ -2,18 +2,19 @@
 using SharpChess.Entities.Primitives.Enums;
 using SharpChess.Utils;
 
-Console.Write("Enter Player 1 name:");
+Console.Write("Enter Player 1 name: ");
 string player1Name = Console.ReadLine();
 
-Console.Write("Enter Player 2 name:");
+Console.Write("Enter Player 2 name: ");
 string player2Name = Console.ReadLine();
 
-Console.Write("Player 1, choose your color:");
+Console.WriteLine("Available Colors:");
 Helpers.DisplayAvailableColors();
+Console.WriteLine();
+Console.Write("Player 1, choose your color: ");
 PieceColor player1Color = Enum.Parse<PieceColor>(Console.ReadLine());
 
-Console.Write("Player 2, choose your color:");
-Helpers.DisplayAvailableColors();
+Console.Write("Player 2, choose your color: ");
 PieceColor player2Color = Enum.Parse<PieceColor>(Console.ReadLine());
 
 if (player1Color == player2Color)

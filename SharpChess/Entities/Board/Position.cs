@@ -2,23 +2,23 @@
 
 public sealed class Position
 {
-    public int X { get; private set; }
     public int Y { get; private set; }
+    public int X { get; private set; }
 
-    public Position(int x, int y)
+    public Position(int y, int x)
     {
-        X = x;
         Y = y;
+        X = x;
     }
 
-    public void SetAll(int x, int y)
+    public void SetAll(int y, int x)
     {
-        X = x;
         Y = y;
+        X = x;
     }
 
     public override string ToString()
     {
-        return $"Coordinates: ({X}, {Y})";
+        return $"Coordinates: (Row {X}, Column {Y})";
     }
 }

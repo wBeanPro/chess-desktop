@@ -32,7 +32,7 @@ public class ChessBoard
 
     public Piece? PieceAt(Position position)
     {
-        return OnBoardPieces[position.X, position.Y];
+        return OnBoardPieces[position.Y, position.X];
     }
 
     public bool PieceExistsAt(Position position)
@@ -56,10 +56,12 @@ public class ChessBoard
     {
         if (PieceExistsAt(destination))
         {
-            throw new MoveNotAllowedException($"There already is a piece at position ({destination.X}, {destination.Y})!");
+            throw new MoveNotAllowedException($"There already is a piece at position (Row {destination.Y}, Column {destination.X})!");
         }
 
-        OnBoardPieces[destination.X, destination.Y] = piece;
+        RemovePieceFrom(piece.Position);
+
+        OnBoardPieces[destination.Y, destination.X] = piece;
         piece.Position = destination;
     }
 
@@ -74,7 +76,7 @@ public class ChessBoard
 
         piece.Position = null;
 
-        OnBoardPieces[position.X, position.Y] = null;
+        OnBoardPieces[position.Y, position.X] = null;
 
         return piece;
     }
@@ -84,41 +86,41 @@ public class ChessBoard
         // Deploying Pawns
         for (int i = 0; i < NumberOfColumns; i++)
         {
-            Position player1PawnInitialPosition = new Position(i, Player1SidePawnRow);
-            Position player2PawnInitialPosition = new Position(i, Player2SidePawnRow);
+            Position player1PawnInitialPosition = new Position(Player1SidePawnRow, i);
+            Position player2PawnInitialPosition = new Position(Player2SidePawnRow, i);
 
-            OnBoardPieces[i, Player1SidePawnRow] = new Pawn(Player1.Color, player1PawnInitialPosition, PieceModels.PawnModel);
-            OnBoardPieces[i, Player2SidePawnRow] = new Pawn(Player2.Color, player2PawnInitialPosition, PieceModels.PawnModel);
+            OnBoardPieces[Player1SidePawnRow, i] = new Pawn(Player1.Color, player1PawnInitialPosition, PieceModels.PawnModel);
+            OnBoardPieces[Player2SidePawnRow, i] = new Pawn(Player2.Color, player2PawnInitialPosition, PieceModels.PawnModel);
         }
 
         // Deploying Rooks (Towers)
-        OnBoardPieces[0, Player1SideOtherUnitsRow] = new Rook(Player1.Color, new Position(0, Player1SideOtherUnitsRow), PieceModels.RookModel);
-        OnBoardPieces[OnBoardPieces.Length - 1, Player1SideOtherUnitsRow] = new Rook(Player1.Color, new Position(0, Player1SideOtherUnitsRow), PieceModels.RookModel);
+        OnBoardPieces[Player1SideOtherUnitsRow, 0] = new Rook(Player1.Color, new Position(0, Player1SideOtherUnitsRow), PieceModels.RookModel);
+        OnBoardPieces[Player1SideOtherUnitsRow, NumberOfColumns - 1] = new Rook(Player1.Color, new Position(0, Player1SideOtherUnitsRow), PieceModels.RookModel);
 
-        OnBoardPieces[0, Player2SideOtherUnitsRow] = new Rook(Player2.Color, new Position(0, Player2SideOtherUnitsRow), PieceModels.RookModel);
-        OnBoardPieces[OnBoardPieces.Length - 1, Player2SideOtherUnitsRow] = new Rook(Player2.Color, new Position(0, Player2SideOtherUnitsRow), PieceModels.RookModel);
+        OnBoardPieces[Player2SideOtherUnitsRow, 0] = new Rook(Player2.Color, new Position(0, Player2SideOtherUnitsRow), PieceModels.RookModel);
+        OnBoardPieces[Player2SideOtherUnitsRow, NumberOfColumns - 1] = new Rook(Player2.Color, new Position(0, Player2SideOtherUnitsRow), PieceModels.RookModel);
 
         // Deploying Knights (Horses)
-        OnBoardPieces[1, Player1SideOtherUnitsRow] = new Knight(Player1.Color, new Position(1, Player1SideOtherUnitsRow), PieceModels.KnightModel);
-        OnBoardPieces[OnBoardPieces.Length - 2, Player1SideOtherUnitsRow] = new Knight(Player1.Color, new Position(OnBoardPieces.Length - 2, Player1SideOtherUnitsRow), PieceModels.KnightModel);
+        OnBoardPieces[Player1SideOtherUnitsRow, 1] = new Knight(Player1.Color, new Position(1, Player1SideOtherUnitsRow), PieceModels.KnightModel);
+        OnBoardPieces[Player1SideOtherUnitsRow, NumberOfColumns - 2] = new Knight(Player1.Color, new Position(OnBoardPieces.Length - 2, Player1SideOtherUnitsRow), PieceModels.KnightModel);
 
-        OnBoardPieces[1, Player2SideOtherUnitsRow] = new Knight(Player2.Color, new Position(1, Player2SideOtherUnitsRow), PieceModels.KnightModel);
-        OnBoardPieces[OnBoardPieces.Length - 2, Player2SideOtherUnitsRow] = new Knight(Player2.Color, new Position(OnBoardPieces.Length - 2, Player2SideOtherUnitsRow), PieceModels.KnightModel);
+        OnBoardPieces[Player2SideOtherUnitsRow, 1] = new Knight(Player2.Color, new Position(1, Player2SideOtherUnitsRow), PieceModels.KnightModel);
+        OnBoardPieces[Player2SideOtherUnitsRow, NumberOfColumns - 2] = new Knight(Player2.Color, new Position(Player2SideOtherUnitsRow, NumberOfColumns - 2), PieceModels.KnightModel);
 
         // Deploying Bishops
-        OnBoardPieces[2, Player1SideOtherUnitsRow] = new Bishop(Player1.Color, new Position(2, Player1SideOtherUnitsRow), PieceModels.BishopModel);
-        OnBoardPieces[OnBoardPieces.Length - 3, Player1SideOtherUnitsRow] = new Bishop(Player1.Color, new Position(OnBoardPieces.Length - 3, Player1SideOtherUnitsRow), PieceModels.BishopModel);
+        OnBoardPieces[Player1SideOtherUnitsRow, 2] = new Bishop(Player1.Color, new Position(Player1SideOtherUnitsRow, 2), PieceModels.BishopModel);
+        OnBoardPieces[Player1SideOtherUnitsRow, NumberOfColumns - 3] = new Bishop(Player1.Color, new Position(Player1SideOtherUnitsRow, NumberOfColumns - 3), PieceModels.BishopModel);
 
-        OnBoardPieces[2, Player2SideOtherUnitsRow] = new Bishop(Player2.Color, new Position(2, Player2SideOtherUnitsRow), PieceModels.BishopModel);
-        OnBoardPieces[OnBoardPieces.Length - 3, Player2SideOtherUnitsRow] = new Bishop(Player2.Color, new Position(OnBoardPieces.Length - 3, Player2SideOtherUnitsRow), PieceModels.BishopModel);
+        OnBoardPieces[Player2SideOtherUnitsRow, 2] = new Bishop(Player2.Color, new Position(Player2SideOtherUnitsRow, 2), PieceModels.BishopModel);
+        OnBoardPieces[Player2SideOtherUnitsRow, NumberOfColumns - 3] = new Bishop(Player2.Color, new Position(Player2SideOtherUnitsRow, NumberOfColumns - 3), PieceModels.BishopModel);
 
         // Deploying Kings
-        OnBoardPieces[3, Player1SideOtherUnitsRow] = new King(Player1.Color, new Position(3, Player1SideOtherUnitsRow), PieceModels.KingModel);
-        OnBoardPieces[3, Player2SideOtherUnitsRow] = new King(Player2.Color, new Position(3, Player2SideOtherUnitsRow), PieceModels.KingModel);
+        OnBoardPieces[Player1SideOtherUnitsRow, 3] = new King(Player1.Color, new Position(Player1SideOtherUnitsRow, 3), PieceModels.KingModel);
+        OnBoardPieces[Player2SideOtherUnitsRow, 3] = new King(Player2.Color, new Position(Player2SideOtherUnitsRow, 3), PieceModels.KingModel);
 
         // Deploying Queens
-        OnBoardPieces[4, Player1SideOtherUnitsRow] = new Queen(Player1.Color, new Position(4, Player1SideOtherUnitsRow), PieceModels.QueenModel);
-        OnBoardPieces[4, Player2SideOtherUnitsRow] = new Queen(Player2.Color, new Position(4, Player2SideOtherUnitsRow), PieceModels.QueenModel);
+        OnBoardPieces[Player1SideOtherUnitsRow, 4] = new Queen(Player1.Color, new Position(Player1SideOtherUnitsRow, 4), PieceModels.QueenModel);
+        OnBoardPieces[Player2SideOtherUnitsRow, 4] = new Queen(Player2.Color, new Position(Player2SideOtherUnitsRow, 4), PieceModels.QueenModel);
     }
 
     public bool CheckWinner() 
@@ -137,19 +139,25 @@ public class ChessBoard
     {
         string board = "";
 
-        for (int i = NumberOfRows; i < 0; i--)
+        for (int i = NumberOfRows - 1; i >= 0; i--)
         {
-            board.Concat($"{i + 1} |");
+            board += $"{i + 1} |";
 
-            for (int j = 0; i > NumberOfColumns; i++)
+            for (int j = NumberOfColumns - 1; j >= 0; j--)
             {
-                board.Concat($" {OnBoardPieces[i,j].PieceModel} |");
+                if (OnBoardPieces[i, j] == null)
+                {
+                    board += " - |";
+                    continue;
+                }
+
+                board += $" {OnBoardPieces[i, j].PieceModel} |";
             }
 
-            board.Concat("\n");
+            board += "\n";
         }
 
-        board.Concat("  | 1 | 2 | 3 | 4 | 6 | 7 | 8 |");
+        board += "  | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |";
 
         return board;
     }
