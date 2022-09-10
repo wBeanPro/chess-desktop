@@ -1,5 +1,6 @@
 ﻿using SharpChess.Entities.Board;
 using SharpChess.Entities.Match.Enums;
+using SharpChess.Exceptions;
 
 namespace SharpChess.Entities.Match;
 
@@ -27,6 +28,8 @@ public sealed class ChessMatch
 
         do
         {
+            var turnPlayer = currentPlayer == 1 ? Player1 : Player2;
+
             Console.WriteLine("Board:");
             Console.WriteLine(Board.ToString());
 
@@ -36,13 +39,31 @@ public sealed class ChessMatch
             Console.Write("Y: ");
             int yValue = int.Parse(Console.ReadLine());
 
+            Position piecePosition = new Position(xValue, yValue);
+
+            try
+            {
+                bool pieceIsNotFromTurnPlayer = !(Board.PieceAt(piecePosition).Color == turnPlayer.Color);
+
+                if (pieceIsNotFromTurnPlayer)
+                {
+                    throw new MoveNotAllowedException("You can't move other's player piece!");
+                }
+            }
+            catch (Exception exception)
+            {
+
+                Console.WriteLine(exception.Message);
+                continue;
+            }
+
+            
             Console.WriteLine($"Player {currentPlayer}, choose the destination:");
             Console.Write("X: ");
             int xDestination = int.Parse(Console.ReadLine());
             Console.Write("Y: ");
             int yDestinatioon = int.Parse(Console.ReadLine());
 
-            Position piecePosition = new Position(xValue, yValue);
             Position destination = new Position(xDestination, yDestinatioon);
 
             try
@@ -69,8 +90,6 @@ public sealed class ChessMatch
             }
 
             currentPlayer = currentPlayer == 1 ? 2 : 1;
-
-            continue;
         } while (CurrentGameState == GameState.Running);
 
         return;
@@ -78,7 +97,7 @@ public sealed class ChessMatch
 
     private static void DisplayWinnerMessage(Player winner)
     {
-        Console.WriteLine($"Congratulations {winner.Name}! You have won the SharpChess match!");
+        Console.WriteLine($"Congratulations {winner.Name}! You have won a SharpChess match!");
     }
 
     private void SetNewGameState(GameState newState)
