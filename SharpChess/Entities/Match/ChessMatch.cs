@@ -71,7 +71,9 @@ public sealed class ChessMatch
             currentPlayer = currentPlayer == 1 ? 2 : 1;
 
             continue;
-        } while (CurrentGameState == GameState.Running); 
+        } while (CurrentGameState == GameState.Running);
+
+        return;
     }
 
     private static void DisplayWinnerMessage(Player winner)

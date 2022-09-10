@@ -1,12 +1,13 @@
-﻿using SharpChess.Entities.Board;
+﻿
+using SharpChess.Entities.Board;
 using SharpChess.Entities.Primitives;
 using SharpChess.Entities.Primitives.Enums;
 
 namespace SharpChess.Entities.Pieces;
 
-public sealed class Rook : Piece
+public sealed class Bishop : Piece
 {
-    public Rook(PieceColor color, Position initialPosition, char pieceModel) 
+    public Bishop(PieceColor color, Position initialPosition, char pieceModel) 
         : base(color, initialPosition, pieceModel) {}
 
     public override void DoEastMovement()

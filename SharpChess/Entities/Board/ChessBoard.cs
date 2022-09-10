@@ -2,6 +2,8 @@
 using SharpChess.Entities.Pieces;
 using SharpChess.Entities.Primitives;
 using SharpChess.Exceptions;
+using SharpChess.Entities.Primitives.Constants;
+using System.Runtime.ConstrainedExecution;
 
 namespace SharpChess.Entities.Board;
 
@@ -9,6 +11,11 @@ public class ChessBoard
 {
     private const int NumberOfRows = 8;
     private const int NumberOfColumns = 8;
+
+    private const int Player1SidePawnRow = 0;
+    private const int Player1SideOtherUnitsRow = 1;
+    private const int Player2SidePawnRow = 6;
+    private const int Player2SideOtherUnitsRow = 7;
 
     private readonly Piece?[,] OnBoardPieces;
     
@@ -75,18 +82,38 @@ public class ChessBoard
 
     private void DeployPieces()
     {
-        const int Player1SidePawnRow = 1;
-        const int Player2SidePawnRow = 6;
-        const char PawnModel = 'P';
-
         for (int i = 0; i < NumberOfColumns; i++)
         {
             Position player1PawnInitialPosition = new Position(i, Player1SidePawnRow);
             Position player2PawnInitialPosition = new Position(i, Player2SidePawnRow);
 
-            OnBoardPieces[i, Player1SidePawnRow] = new Pawn(Player1.Color, player1PawnInitialPosition, PawnModel);
-            OnBoardPieces[i, Player2SidePawnRow] = new Pawn(Player2.Color, player2PawnInitialPosition, PawnModel);
+            OnBoardPieces[i, Player1SidePawnRow] = new Pawn(Player1.Color, player1PawnInitialPosition, PieceModels.PawnModel);
+            OnBoardPieces[i, Player2SidePawnRow] = new Pawn(Player2.Color, player2PawnInitialPosition, PieceModels.PawnModel);
         }
+
+        // Deploying Rooks (Towers
+        OnBoardPieces[0, Player1SideOtherUnitsRow] = new Rook(Player1.Color, new Position(0, Player1SideOtherUnitsRow), PieceModels.RookModel);
+        OnBoardPieces[0, Player2SideOtherUnitsRow] = new Rook(Player2.Color, new Position(0, Player2SideOtherUnitsRow), PieceModels.RookModel);
+        OnBoardPieces[OnBoardPieces.Length - 1, Player1SideOtherUnitsRow] = new Rook(Player1.Color, new Position(0, Player1SideOtherUnitsRow), PieceModels.RookModel);
+        OnBoardPieces[OnBoardPieces.Length - 1, Player2SideOtherUnitsRow] = new Rook(Player2.Color, new Position(0, Player2SideOtherUnitsRow), PieceModels.RookModel);
+
+        // Deploying Knights (Horses)
+        OnBoardPieces[1, Player1SideOtherUnitsRow] = new Knight(Player1.Color, new Position(1, Player1SideOtherUnitsRow), PieceModels.KnightModel);
+        OnBoardPieces[1, Player2SideOtherUnitsRow] = new Knight(Player2.Color, new Position(1, Player2SideOtherUnitsRow), PieceModels.KnightModel);
+        OnBoardPieces[OnBoardPieces.Length - 2, Player1SideOtherUnitsRow] = new Knight(Player1.Color, new Position(OnBoardPieces.Length - 2, Player1SideOtherUnitsRow), PieceModels.KnightModel);
+        OnBoardPieces[OnBoardPieces.Length - 2, Player2SideOtherUnitsRow] = new Knight(Player2.Color, new Position(OnBoardPieces.Length - 2, Player2SideOtherUnitsRow), PieceModels.KnightModel);
+
+        // Deploying Bishops
+        OnBoardPieces[1, Player1SideOtherUnitsRow] = new Bishop(Player1.Color, new Position(1, Player1SideOtherUnitsRow), PieceModels.BishopModel);
+        OnBoardPieces[1, Player2SideOtherUnitsRow] = new Bishop(Player2.Color, new Position(1, Player2SideOtherUnitsRow), PieceModels.BishopModel);
+        OnBoardPieces[OnBoardPieces.Length - 2, Player1SideOtherUnitsRow] = new Bishop(Player1.Color, new Position(OnBoardPieces.Length - 2, Player1SideOtherUnitsRow), PieceModels.BishopModel);
+        OnBoardPieces[OnBoardPieces.Length - 2, Player2SideOtherUnitsRow] = new Bishop(Player2.Color, new Position(OnBoardPieces.Length - 2, Player2SideOtherUnitsRow), PieceModels.BishopModel);
+
+        // Deploying Kings
+
+        // Deploying Queens
+
+
     }
 
     public bool CheckWinner() 
