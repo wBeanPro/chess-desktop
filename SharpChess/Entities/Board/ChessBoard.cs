@@ -3,7 +3,6 @@ using SharpChess.Entities.Pieces;
 using SharpChess.Entities.Primitives;
 using SharpChess.Exceptions;
 using SharpChess.Entities.Primitives.Constants;
-using System.Runtime.ConstrainedExecution;
 
 namespace SharpChess.Entities.Board;
 
