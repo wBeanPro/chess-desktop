@@ -1,7 +1,7 @@
-﻿using SharpChess.Entities.Match;
+﻿using SharpChess.Exceptions;
+using SharpChess.Entities.Match;
 using SharpChess.Entities.Pieces;
 using SharpChess.Entities.Primitives;
-using SharpChess.Exceptions;
 using SharpChess.Entities.Primitives.Constants;
 
 namespace SharpChess.Entities.Board;
@@ -42,9 +42,9 @@ public class ChessBoard
     
     public static bool PositionIsValid(Position destination)
     {
-        bool xPositionIsNotValid = destination.X < 0 || destination.X > NumberOfRows;
-        bool yPositionIsNotValid = destination.Y < 0 || destination.Y > NumberOfColumns;
-        if (xPositionIsNotValid || yPositionIsNotValid)
+        bool xPositionIsOutOfBounds = destination.X < 0 || destination.X > NumberOfRows;
+        bool yPositionIsOutOfBounds = destination.Y < 0 || destination.Y > NumberOfColumns;
+        if (xPositionIsOutOfBounds || yPositionIsOutOfBounds)
         {
             return false;
         }
@@ -137,28 +137,28 @@ public class ChessBoard
 
     public override string ToString()
     {
-        string board = "";
+        string chessBoard = "";
 
         for (int i = NumberOfRows - 1; i >= 0; i--)
         {
-            board += $"{i + 1} |";
+            chessBoard += $"{i + 1} |";
 
-            for (int j = NumberOfColumns - 1; j >= 0; j--)
+            for (int j = 0; j < NumberOfColumns; j++)
             {
                 if (OnBoardPieces[i, j] == null)
                 {
-                    board += " - |";
+                    chessBoard += " - |";
                     continue;
                 }
 
-                board += $" {OnBoardPieces[i, j].PieceModel} |";
+                chessBoard += $" {OnBoardPieces[i, j].PieceModel} |";
             }
 
-            board += "\n";
+            chessBoard += "\n";
         }
 
-        board += "  | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |";
+        chessBoard += "  | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |";
 
-        return board;
+        return chessBoard;
     }
 }

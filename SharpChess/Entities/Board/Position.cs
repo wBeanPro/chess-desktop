@@ -19,6 +19,6 @@ public sealed class Position
 
     public override string ToString()
     {
-        return $"Coordinates: (Row {X}, Column {Y})";
+        return $"Coordinates: (Row {Y}, Column {X})";
     }
 }

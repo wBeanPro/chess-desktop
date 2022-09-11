@@ -1,6 +1,6 @@
-﻿using SharpChess.Entities.Board;
+﻿using SharpChess.Exceptions;
+using SharpChess.Entities.Board;
 using SharpChess.Entities.Match.Enums;
-using SharpChess.Exceptions;
 
 namespace SharpChess.Entities.Match;
 
@@ -35,9 +35,9 @@ public sealed class ChessMatch
 
             Console.WriteLine($"Player {currentPlayer}, choose the piece location to move:");
             Console.Write("Y (Row): ");
-            int yValue = int.Parse(Console.ReadLine());
+            int yValue = int.Parse(Console.ReadLine()) - 1;
             Console.Write("X (Column): ");
-            int xValue = int.Parse(Console.ReadLine());
+            int xValue = int.Parse(Console.ReadLine()) - 1;
 
             Position movingPiecePosition = new Position(yValue, xValue);
 
@@ -60,9 +60,9 @@ public sealed class ChessMatch
             
             Console.WriteLine($"Player {currentPlayer}, choose the destination:");
             Console.Write("Y (Row): ");
-            int yDestination = int.Parse(Console.ReadLine());
+            int yDestination = int.Parse(Console.ReadLine()) - 1;
             Console.Write("X (Column): ");
-            int xDestination = int.Parse(Console.ReadLine());
+            int xDestination = int.Parse(Console.ReadLine()) - 1;
 
             Position destination = new Position(yDestination, xDestination);
 

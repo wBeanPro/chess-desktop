@@ -47,9 +47,8 @@ public abstract class Piece
                 DoNorthEastMovement();
                 break;
             default:
-                throw new MoveNotAllowedException("Movement Direction not allowed!");
+                throw new MoveNotAllowedException("Movement Direction does not exists!");
         }
-
     }
 
     public abstract void DoNorthMovement();

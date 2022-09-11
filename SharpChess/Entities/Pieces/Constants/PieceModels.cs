@@ -2,10 +2,10 @@
 
 public static class PieceModels
 {
-    public static char BishopModel = 'B';
-    public static char KingModel = 'K';
-    public static char KnightModel = 'H';
-    public static char PawnModel = 'P';
-    public static char QueenModel = 'Q';
-    public static char RookModel = 'R';
+    public const char BishopModel = 'B';
+    public const char KingModel = 'K';
+    public const char KnightModel = 'H';
+    public const char PawnModel = 'P';
+    public const char QueenModel = 'Q';
+    public const char RookModel = 'R';
 }
