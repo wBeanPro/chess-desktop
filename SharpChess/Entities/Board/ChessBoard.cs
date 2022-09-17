@@ -16,7 +16,7 @@ public sealed class ChessBoard
     private const int Player2SidePawnRow = 6;
     private const int Player2SideOtherUnitsRow = 7;
 
-    private readonly Spot[,] OnBoardPieces;
+    private readonly Piece?[,] OnBoardPieces;
     
     private Player Player1 { get; init; }
     private Player Player2 { get; init; }
@@ -26,13 +26,13 @@ public sealed class ChessBoard
     {
         Player1 = player1;
         Player2 = player2;
-        OnBoardPieces = new Spot[NumberOfRows, NumberOfColumns];
+        OnBoardPieces = new Piece?[NumberOfRows, NumberOfColumns];
         DeployPieces();
     }
 
     public Piece? PieceAt(Position position)
     {
-        return OnBoardPieces[position.Y, position.X].Piece;
+        return OnBoardPieces[position.Y, position.X];
     }
 
     public bool PieceExistsAt(Position position)
@@ -63,7 +63,7 @@ public sealed class ChessBoard
         RemovePieceFrom(piece.Position);
 
         piece.Position = destination;
-        OnBoardPieces[destination.Y, destination.X].RemoveOldAndSetNewPiece(piece);
+        OnBoardPieces[destination.Y, destination.X] = piece;
     }
 
     public Piece? RemovePieceFrom(Position position)
@@ -77,7 +77,7 @@ public sealed class ChessBoard
 
         piece.Position = null;
 
-        OnBoardPieces[position.Y, position.X].Piece = null;
+        OnBoardPieces[position.Y, position.X] = null;
 
         return piece;
     }
