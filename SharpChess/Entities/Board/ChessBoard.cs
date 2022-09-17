@@ -6,7 +6,7 @@ using SharpChess.Entities.Primitives.Constants;
 
 namespace SharpChess.Entities.Board;
 
-public sealed class ChessBoard
+public sealed class ChessBoard : IGameBoard
 {
     private const int NumberOfRows = 8;
     private const int NumberOfColumns = 8;
@@ -40,7 +40,7 @@ public sealed class ChessBoard
         return PositionIsValid(position) && PieceAt(position) != null;
     }
     
-    public static bool PositionIsValid(Position destination)
+    public bool PositionIsValid(Position destination)
     {
         bool xPositionIsOutOfBounds = destination.X < 0 || destination.X > NumberOfRows;
         bool yPositionIsOutOfBounds = destination.Y < 0 || destination.Y > NumberOfColumns;
