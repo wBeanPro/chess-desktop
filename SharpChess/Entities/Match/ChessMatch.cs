@@ -68,8 +68,9 @@ public sealed class ChessMatch
 
             try
             {
-                Board.PutPieceAt(Board.PieceAt(movingPiecePosition), destination);
-            } 
+                var pieceToMove = Board.PieceAt(movingPiecePosition);
+                Board.PutPieceAt(pieceToMove, destination);
+            }
             catch (Exception exception)
             {
                 Console.WriteLine(exception.Message);

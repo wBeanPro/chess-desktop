@@ -1,6 +1,6 @@
 ﻿namespace SharpChess.Exceptions;
 
-public class MoveNotAllowedException : ApplicationException
+public sealed class MoveNotAllowedException : ApplicationException
 {
     public MoveNotAllowedException(string message) : base(message) {}
 }

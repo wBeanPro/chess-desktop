@@ -6,7 +6,7 @@ using SharpChess.Entities.Primitives.Constants;
 
 namespace SharpChess.Entities.Board;
 
-public class ChessBoard
+public sealed class ChessBoard
 {
     private const int NumberOfRows = 8;
     private const int NumberOfColumns = 8;
@@ -16,7 +16,7 @@ public class ChessBoard
     private const int Player2SidePawnRow = 6;
     private const int Player2SideOtherUnitsRow = 7;
 
-    private readonly Piece?[,] OnBoardPieces;
+    private readonly Spot[,] OnBoardPieces;
     
     private Player Player1 { get; init; }
     private Player Player2 { get; init; }
@@ -26,13 +26,13 @@ public class ChessBoard
     {
         Player1 = player1;
         Player2 = player2;
-        OnBoardPieces = new Piece?[NumberOfRows, NumberOfColumns];
+        OnBoardPieces = new Spot[NumberOfRows, NumberOfColumns];
         DeployPieces();
     }
 
     public Piece? PieceAt(Position position)
     {
-        return OnBoardPieces[position.Y, position.X];
+        return OnBoardPieces[position.Y, position.X].Piece;
     }
 
     public bool PieceExistsAt(Position position)
@@ -54,15 +54,16 @@ public class ChessBoard
 
     public void PutPieceAt(Piece piece, Position destination)
     {
+        // Check if there is an enemy piece at destination
         if (PieceExistsAt(destination))
         {
-            throw new MoveNotAllowedException($"There already is a piece at position (Row {destination.Y}, Column {destination.X})!");
+            
         }
 
         RemovePieceFrom(piece.Position);
 
-        OnBoardPieces[destination.Y, destination.X] = piece;
         piece.Position = destination;
+        OnBoardPieces[destination.Y, destination.X].RemoveOldAndSetNewPiece(piece);
     }
 
     public Piece? RemovePieceFrom(Position position)
@@ -76,9 +77,20 @@ public class ChessBoard
 
         piece.Position = null;
 
-        OnBoardPieces[position.Y, position.X] = null;
+        OnBoardPieces[position.Y, position.X].Piece = null;
 
         return piece;
+    }
+
+    public void PrepareBoard()
+    {
+        for (int i = 0; i < NumberOfRows; i++)
+        {
+            for (int j = 0; j < NumberOfColumns; j++)
+            {
+                OnBoardPieces[i, j] = new Spot(i, j);
+            }
+        }
     }
 
     private void DeployPieces()
