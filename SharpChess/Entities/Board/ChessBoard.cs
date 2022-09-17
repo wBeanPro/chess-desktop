@@ -82,17 +82,6 @@ public sealed class ChessBoard
         return piece;
     }
 
-    public void PrepareBoard()
-    {
-        for (int i = 0; i < NumberOfRows; i++)
-        {
-            for (int j = 0; j < NumberOfColumns; j++)
-            {
-                OnBoardPieces[i, j] = new Spot(i, j);
-            }
-        }
-    }
-
     private void DeployPieces()
     {
         // Deploying Pawns
